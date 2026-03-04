@@ -118,10 +118,10 @@ http://localhost:4000
 ## 📸 Screenshots
 
 ### Login Page
-![Login Page](screenshots/sign up.png)
+![Login Page](screenshots/signup.png)
 
 ### Signup Page
-![Signup Page](screenshots/login.png)
+![Signup Page](screenshots/signin.png)
 
 ### Dashboard
 ![Dashboard](screenshots/dashboard.png)

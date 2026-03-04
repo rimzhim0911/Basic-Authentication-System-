@@ -117,11 +117,11 @@ http://localhost:4000
 
 ## 📸 Screenshots
 
-### Login Page
-![Login Page](screenshots/signup.png)
+### Sign Up Page
+![Signup Page](screenshots/signup.png)
 
-### Signup Page
-![Signup Page](screenshots/signin.png)
+### Sign In Page
+![Signin Page](screenshots/signin.png)
 
 ### Dashboard
 ![Dashboard](screenshots/dashboard.png)

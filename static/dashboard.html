@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #eff7f6; text-align: center; padding: 20px; }
+    .welcome { font-size: 28px; font-weight: bold; margin-top: 10px; color: #000; margin-bottom: 25px; }
+    .logout-btn { background: #ff8fa3; color: white; border: none; padding: 8px 16px; cursor: pointer; border-radius: 6px; font-size: 18px; margin-top: 50px; }
+    .heading{ height: 120px; display: flex; align-items: center; justify-content: center; background-color: #ffe5ec; font-size: 30px; font-weight: bolder; border-radius: 8px; margin-bottom: 15px; }
+    .calculator { border-radius: 5px; background-color: #d0f4de; padding: 20px; max-width: 400px; margin: 0 auto; border: solid 1px #ccc; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
+    #result{ width: 90%; padding: 10px; font-size: 24px; border: none; box-shadow: 0 2px 5px rgba(0,0,0,0.3) inset; border-radius: 5px; display:block; margin: 0 auto; }
+    .buttons{ display: grid; grid-template-columns: repeat(4, 1fr); grid-gap: 10px; margin-top: 20px; }
+    button{ padding: 10px; font-size: 24px; border: none; box-shadow: 0 2px 5px rgba(0,0,0,0.3); border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease; }
+    button:hover{ background-color: #ddd; }
+    .clear{ background-color: #00afb9; color: #fff; }
+    .number, .decimal{ background-color: #fff; color: #333; }
+    .operator{ background-color: #9f86c0; color: #fff; }
+    .equals{ background-color: #3d405b; grid-row: span 3; color: #fff; }
+  </style>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="welcome">Welcome</div>
+
+  <!-- Calculator -->
+  <div class="heading">CALCULATOR</div>
+  <div class="calculator">
+      <input type="text" id="result" readonly>
+      <div class="buttons">
+          <button class="clear">C</button>
+          <button class="operator">/</button>
+          <button class="operator">*</button>
+          <button class="operator">-</button>
+          <button class="number">7</button>
+          <button class="number">8</button>
+          <button class="number">9</button>
+          <button class="operator">+</button>
+          <button class="number">4</button>
+          <button class="number">5</button>
+          <button class="number">6</button>
+          <button class="equals">=</button>
+          <button class="number">1</button>
+          <button class="number">2</button>
+          <button class="number">3</button>
+          <button class="number">0</button>
+          <button class="decimal">.</button>
+      </div>
+  </div>
+
+  <!-- Logout Button -->
+  <button class="logout-btn" id="logoutBtn">Logout</button>
+
+  <script>
+    // 🔐 JWT PROTECTION CHECK
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      // No token → redirect to login page
+      window.location.href = "/";
+    } else {
+      // Verify token with backend
+      fetch("/api/auth/verify", {
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      })
+      .then(res => {
+        if (!res.ok) {
+          localStorage.removeItem("token");
+          window.location.href = "/";
+        }
+      })
+      .catch(() => {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+      });
+    }
+
+    // ----------- Calculator JS --------------
+    const input = document.getElementById("result");
+    document.querySelectorAll(".calculator .buttons button").forEach(btn =>
+      btn.addEventListener("click", () => {
+        if (btn.textContent === "C") { input.value = ""; return; }
+        if (btn.textContent === "=") {
+          try {
+            input.value = String(eval(input.value || "0"));
+          } catch {
+            input.value = "Error";
+          }
+          return;
+        }
+        input.value += btn.textContent;
+      })
+    );
+
+    // ----------- Logout -------------
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("token"); // remove JWT
+      window.location.href = "/";       // back to login
+    });
+  </script>
+
+</body>
+</html>
